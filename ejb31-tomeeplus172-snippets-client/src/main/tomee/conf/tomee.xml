@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tomee>
+    <Resource id="mysql" type="DataSource">
+        JdbcDriver      = com.mysql.jdbc.Driver
+        JdbcUrl         = jdbc:mysql://localhost:3306
+        UserName        = root
+        Password        = 
+    </Resource>
+    
+    
+    <!-- external broker -->
+    <!-- 
+    <Resource id="MyJmsResourceAdapter" type="ActiveMQResourceAdapter">
+        BrokerXmlConfig =
+        ServerUrl       =  tcp://localhost:61616
+    </Resource>
+    -->
+    
+    <!-- internally built-in activemq broker, comes with tomee --> 
+    <Resource id="MyJmsResourceAdapter" type="ActiveMQResourceAdapter">             
+        BrokerXmlConfig = broker:(tcp://localhost:61616)
+        ServerUrl       = tcp://localhost:61616
+        #ServerUrl        = vm://localhost
+    </Resource>
+    
+      
+    <Resource id="MyJmsConnectionFactory" type="javax.jms.ConnectionFactory">
+        ResourceAdapter = MyJmsResourceAdapter
+    </Resource>
+    
+    <Container id="MyJmsMdbContainer" ctype="MESSAGE">
+        ResourceAdapter = MyJmsResourceAdapter
+    </Container>
+    
+    <Resource id="consumingQueue" type="javax.jms.Queue">
+        #encoding        = NATIVE 
+    </Resource>>
+    
+    <Deployments dir="apps/"/>
+</tomee>

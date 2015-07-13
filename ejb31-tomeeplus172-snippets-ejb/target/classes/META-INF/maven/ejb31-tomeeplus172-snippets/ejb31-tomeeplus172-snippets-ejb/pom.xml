@@ -1,0 +1,77 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>ejb31-tomeeplus172-snippets</groupId>
+        <artifactId>ejb31-tomeeplus172-snippets</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>ejb31-tomeeplus172-snippets-ejb</artifactId>
+    <!--  
+        Using packaging type ejb includes the execution of the maven-ejb-plugin. 
+        reference: http://stackoverflow.com/a/18866901
+    -->  
+    <packaging>ejb</packaging>    
+    <name>ejb31-tomeeplus172-snippets-ejb</name>
+    
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+    
+    
+    <build>   
+        <plugins>   
+        
+            <!-- compile -->                  
+            <plugin>                                   
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.0</version>
+                <configuration>
+                    <source>1.6</source> 
+                    <target>1.6</target>
+                </configuration>                         
+            </plugin>   
+            
+            <!-- 
+                if version 2.1, it can be omitted, because by default, it's 2.1 
+                if version 3.1, it cannot be omitted
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-ejb-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <ejbVersion>3.1</ejbVersion>
+                </configuration>
+            </plugin>      
+        </plugins>    
+    </build>  
+    
+    
+    <dependencies>    
+        <!-- javax -->
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <!-- 
+                1.  wihout scope = provided, it hits javax/transaction/SystemException
+                        test1(javaee.jta.atkmikos.example1.ClientIT): Absent Code attribute in method that is not native or abstract in class file javax/transaction/SystemException
+                2.  fix it 
+                        a) by adding scope, 
+                                https://aishwaryavaishno.wordpress.com/tag/javaxtransactionsystemexception/
+                        b) by switch from 6.0 to 7.0, although the quote reference is from 6.0 to 6.0-5, 
+                                http://stackoverflow.com/questions/15386950/classformaterror-absent-code-attribute-in-method-that-is-not-native-or-abstract 
+             -->
+            <version>6.0</version>            
+            <scope>provided</scope>
+        </dependency>
+         
+        <dependency>
+            <groupId>org.apache.openejb</groupId>
+            <artifactId>openejb-core</artifactId>
+            <version>4.7.2</version>
+        </dependency>                       
+    </dependencies>   
+    
+</project>
